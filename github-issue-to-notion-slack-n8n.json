@@ -1,0 +1,450 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "owner": {
+          "__rl": true,
+          "value": "suyash-web",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "ta-rpa-challenge",
+          "mode": "list",
+          "cachedResultName": "ta-rpa-challenge",
+          "cachedResultUrl": "https://github.com/suyash-web/ta-rpa-challenge"
+        },
+        "events": [
+          "issues"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.githubTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4fd3ac5c-30b6-495c-b041-0f4ee971421f",
+      "name": "Github Trigger",
+      "webhookId": "b75df25c-18f1-4903-a1a0-6f59705f159f",
+      "credentials": {
+        "githubApi": {
+          "id": "eUatfCqUa9uXaHM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cd765f3f-f226-4ae0-b40d-745e18a15b9c",
+              "name": "body.issue.url",
+              "value": "={{ $json.body.issue.url }}",
+              "type": "string"
+            },
+            {
+              "id": "79365705-bef6-4c33-83eb-066ff8d016cf",
+              "name": "body.issue.user.login",
+              "value": "={{ $json.body.issue.user.login }}",
+              "type": "string"
+            },
+            {
+              "id": "d7497ea2-c851-4fe7-bd9d-64a1ef2f39c5",
+              "name": "body.issue.created_at",
+              "value": "={{ $json.body.issue.created_at }}",
+              "type": "string"
+            },
+            {
+              "id": "427ef263-7c62-4cfe-8271-a90d4556b93b",
+              "name": "body.issue.state",
+              "value": "={{ $json.body.issue.state }}",
+              "type": "string"
+            },
+            {
+              "id": "5673d974-a50c-4085-af20-4fe00d27d76b",
+              "name": "body.issue.title",
+              "value": "={{ $json.body.issue.title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9ac993a1-3b1c-47b5-b10c-746e4ff177b6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "https://www.notion.so/2da52f6ada0780ccade1e7dd7f69b75d",
+          "mode": "url"
+        },
+        "title": "GitHub Issues n8n",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Title|title",
+              "title": "={{ $json.body.issue.title }}"
+            },
+            {
+              "key": "User|rich_text",
+              "textContent": "={{ $json.body.issue.user.login }}"
+            },
+            {
+              "key": "Created_At|date",
+              "date": "={{ $json.body.issue.created_at }}"
+            },
+            {
+              "key": "URL|url",
+              "urlValue": "={{ $json.body.issue.url }}"
+            },
+            {
+              "key": "State|rich_text",
+              "textContent": "={{ $json.body.issue.state }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "57cbcb7b-5575-44e9-84c9-755f29b2b9b9",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "nTZBvM6x5RGTlyMZ",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "#test-channel",
+          "mode": "name"
+        },
+        "text": "=🆕 New GitHub Issue Created\n• Title: {{$json.property_title}}\n• Author: {{$json.property_user}}\n• Link: {{$json.url}}\n• Created At: {{$json.property_created_at.start}}\n• Status: {{$json.property_state}}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "30ed527b-036a-4675-b756-85990068b7ed",
+      "name": "Send a message",
+      "webhookId": "58d0aa78-6a6f-42b5-8480-b4df10ef33f2",
+      "credentials": {
+        "slackApi": {
+          "id": "pWzHyun2OoshegDC",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Github Trigger": [
+      {
+        "json": {
+          "body": {
+            "action": "opened",
+            "issue": {
+              "url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/1",
+              "repository_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge",
+              "labels_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/1/labels{/name}",
+              "comments_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/1/comments",
+              "events_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/1/events",
+              "html_url": "https://github.com/suyash-web/ta-rpa-challenge/issues/1",
+              "id": 3771984653,
+              "node_id": "I_kwDOJZr0lc7g0-sN",
+              "number": 1,
+              "title": "n8n test",
+              "user": {
+                "login": "suyash-web",
+                "id": 66136072,
+                "node_id": "MDQ6VXNlcjY2MTM2MDcy",
+                "avatar_url": "https://avatars.githubusercontent.com/u/66136072?v=4",
+                "gravatar_id": "",
+                "url": "https://api.github.com/users/suyash-web",
+                "html_url": "https://github.com/suyash-web",
+                "followers_url": "https://api.github.com/users/suyash-web/followers",
+                "following_url": "https://api.github.com/users/suyash-web/following{/other_user}",
+                "gists_url": "https://api.github.com/users/suyash-web/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/suyash-web/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/suyash-web/subscriptions",
+                "organizations_url": "https://api.github.com/users/suyash-web/orgs",
+                "repos_url": "https://api.github.com/users/suyash-web/repos",
+                "events_url": "https://api.github.com/users/suyash-web/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/suyash-web/received_events",
+                "type": "User",
+                "user_view_type": "public",
+                "site_admin": false
+              },
+              "labels": [],
+              "state": "open",
+              "locked": false,
+              "assignee": null,
+              "assignees": [],
+              "milestone": null,
+              "comments": 0,
+              "created_at": "2025-12-31T04:56:12Z",
+              "updated_at": "2025-12-31T04:56:12Z",
+              "closed_at": null,
+              "author_association": "OWNER",
+              "active_lock_reason": null,
+              "sub_issues_summary": {
+                "total": 0,
+                "completed": 0,
+                "percent_completed": 0
+              },
+              "issue_dependencies_summary": {
+                "blocked_by": 0,
+                "total_blocked_by": 0,
+                "blocking": 0,
+                "total_blocking": 0
+              },
+              "body": "This is a test issue for n8n",
+              "reactions": {
+                "url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/1/reactions",
+                "total_count": 0,
+                "+1": 0,
+                "-1": 0,
+                "laugh": 0,
+                "hooray": 0,
+                "confused": 0,
+                "heart": 0,
+                "rocket": 0,
+                "eyes": 0
+              },
+              "timeline_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/1/timeline",
+              "performed_via_github_app": null,
+              "state_reason": null
+            },
+            "repository": {
+              "id": 630912149,
+              "node_id": "R_kgDOJZr0lQ",
+              "name": "ta-rpa-challenge",
+              "full_name": "suyash-web/ta-rpa-challenge",
+              "private": true,
+              "owner": {
+                "login": "suyash-web",
+                "id": 66136072,
+                "node_id": "MDQ6VXNlcjY2MTM2MDcy",
+                "avatar_url": "https://avatars.githubusercontent.com/u/66136072?v=4",
+                "gravatar_id": "",
+                "url": "https://api.github.com/users/suyash-web",
+                "html_url": "https://github.com/suyash-web",
+                "followers_url": "https://api.github.com/users/suyash-web/followers",
+                "following_url": "https://api.github.com/users/suyash-web/following{/other_user}",
+                "gists_url": "https://api.github.com/users/suyash-web/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/suyash-web/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/suyash-web/subscriptions",
+                "organizations_url": "https://api.github.com/users/suyash-web/orgs",
+                "repos_url": "https://api.github.com/users/suyash-web/repos",
+                "events_url": "https://api.github.com/users/suyash-web/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/suyash-web/received_events",
+                "type": "User",
+                "user_view_type": "public",
+                "site_admin": false
+              },
+              "html_url": "https://github.com/suyash-web/ta-rpa-challenge",
+              "description": null,
+              "fork": false,
+              "url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge",
+              "forks_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/forks",
+              "keys_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/keys{/key_id}",
+              "collaborators_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/collaborators{/collaborator}",
+              "teams_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/teams",
+              "hooks_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/hooks",
+              "issue_events_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/events{/number}",
+              "events_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/events",
+              "assignees_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/assignees{/user}",
+              "branches_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/branches{/branch}",
+              "tags_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/tags",
+              "blobs_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/git/blobs{/sha}",
+              "git_tags_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/git/tags{/sha}",
+              "git_refs_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/git/refs{/sha}",
+              "trees_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/git/trees{/sha}",
+              "statuses_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/statuses/{sha}",
+              "languages_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/languages",
+              "stargazers_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/stargazers",
+              "contributors_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/contributors",
+              "subscribers_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/subscribers",
+              "subscription_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/subscription",
+              "commits_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/commits{/sha}",
+              "git_commits_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/git/commits{/sha}",
+              "comments_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/comments{/number}",
+              "issue_comment_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues/comments{/number}",
+              "contents_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/contents/{+path}",
+              "compare_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/compare/{base}...{head}",
+              "merges_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/merges",
+              "archive_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/{archive_format}{/ref}",
+              "downloads_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/downloads",
+              "issues_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/issues{/number}",
+              "pulls_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/pulls{/number}",
+              "milestones_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/milestones{/number}",
+              "notifications_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/notifications{?since,all,participating}",
+              "labels_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/labels{/name}",
+              "releases_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/releases{/id}",
+              "deployments_url": "https://api.github.com/repos/suyash-web/ta-rpa-challenge/deployments",
+              "created_at": "2023-04-21T12:54:17Z",
+              "updated_at": "2023-10-31T12:16:50Z",
+              "pushed_at": "2023-05-14T12:15:40Z",
+              "git_url": "git://github.com/suyash-web/ta-rpa-challenge.git",
+              "ssh_url": "git@github.com:suyash-web/ta-rpa-challenge.git",
+              "clone_url": "https://github.com/suyash-web/ta-rpa-challenge.git",
+              "svn_url": "https://github.com/suyash-web/ta-rpa-challenge",
+              "homepage": null,
+              "size": 36,
+              "stargazers_count": 0,
+              "watchers_count": 0,
+              "language": "Python",
+              "has_issues": true,
+              "has_projects": true,
+              "has_downloads": true,
+              "has_wiki": false,
+              "has_pages": false,
+              "has_discussions": false,
+              "forks_count": 0,
+              "mirror_url": null,
+              "archived": false,
+              "disabled": false,
+              "open_issues_count": 1,
+              "license": {
+                "key": "apache-2.0",
+                "name": "Apache License 2.0",
+                "spdx_id": "Apache-2.0",
+                "url": "https://api.github.com/licenses/apache-2.0",
+                "node_id": "MDc6TGljZW5zZTI="
+              },
+              "allow_forking": true,
+              "is_template": false,
+              "web_commit_signoff_required": false,
+              "topics": [],
+              "visibility": "private",
+              "forks": 0,
+              "open_issues": 1,
+              "watchers": 0,
+              "default_branch": "main"
+            },
+            "sender": {
+              "login": "suyash-web",
+              "id": 66136072,
+              "node_id": "MDQ6VXNlcjY2MTM2MDcy",
+              "avatar_url": "https://avatars.githubusercontent.com/u/66136072?v=4",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/suyash-web",
+              "html_url": "https://github.com/suyash-web",
+              "followers_url": "https://api.github.com/users/suyash-web/followers",
+              "following_url": "https://api.github.com/users/suyash-web/following{/other_user}",
+              "gists_url": "https://api.github.com/users/suyash-web/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/suyash-web/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/suyash-web/subscriptions",
+              "organizations_url": "https://api.github.com/users/suyash-web/orgs",
+              "repos_url": "https://api.github.com/users/suyash-web/repos",
+              "events_url": "https://api.github.com/users/suyash-web/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/suyash-web/received_events",
+              "type": "User",
+              "user_view_type": "public",
+              "site_admin": false
+            }
+          },
+          "headers": {
+            "host": "suyashn8n.app.n8n.cloud",
+            "user-agent": "GitHub-Hookshot/006ce70",
+            "content-length": "8788",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "140.82.115.112",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "9b67306f94fa7f82-IAD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "x-forwarded-for": "140.82.115.112, 172.68.15.178",
+            "x-forwarded-host": "suyashn8n.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-104-6f574f466-zfnc4",
+            "x-github-delivery": "07f7c738-e605-11f0-830a-e34e8e500707",
+            "x-github-event": "issues",
+            "x-github-hook-id": "589078401",
+            "x-github-hook-installation-target-id": "630912149",
+            "x-github-hook-installation-target-type": "repository",
+            "x-is-trusted": "yes",
+            "x-real-ip": "140.82.115.112"
+          },
+          "query": {}
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Github Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "1372ce66-f3ef-4f50-98b7-417293065de8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e9fe238657f6a1c2d95d51016a5a2599df66632192bce18341c1427abc752556"
+  },
+  "id": "PbhoSuom02XSQEXg",
+  "tags": []
+}
